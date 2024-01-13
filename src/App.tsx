@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import OrderDetails from './components/OrderDetails';
+import AddItems from './components/AddItems';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface MenuItem {
+  name: string;
+  price: number;
 }
 
-export default App
+interface OrderItem extends MenuItem {
+  quantity: number;
+}
+
+function App() {
+  const [order, setOrder] = useState<OrderItem[]>([]);
+
+  const addItemToOrder = (item: MenuItem) => {
+    const existingItem = order.find((orderItem) => orderItem.name === item.name);
+
+    if (existingItem) {
+      const updatedOrder = order.map((orderItem) =>
+        orderItem.name === item.name
+          ? { ...orderItem, quantity: orderItem.quantity + 1 }
+          : orderItem
+      );
+      setOrder(updatedOrder);
+    } else {
+      setOrder([...order, { ...item, quantity: 1 }]);
+    }
+  };
+ 
+  const removeItemFromOrder = (item: OrderItem) => {
+    const updatedOrder = order
+      .map((orderItem) =>
+        orderItem.name === item.name && orderItem.quantity > 0
+          ? { ...orderItem, quantity: orderItem.quantity - 1 }
+          : orderItem
+      )
+      .filter((orderItem) => orderItem.quantity > 0);
+
+    setOrder(updatedOrder);
+  };
+
+  const totalPrice = order.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  return (
+    <div className="app">
+      <OrderDetails order={order} removeItem={removeItemFromOrder} totalPrice={totalPrice} />
+      <AddItems addItem={addItemToOrder} />
+    </div>
+  );
+}
+
+export default App; 

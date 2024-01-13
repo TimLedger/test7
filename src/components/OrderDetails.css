@@ -1,19 +1,23 @@
 ul {
-  list-style-type: none;
-  padding: 0;
-}
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  li button {
+    background-color: #dc3545;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+  }  
 
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-}
-
-li button {
-  background-color: #dc3545;
-  color: #000000;
-  border: none;
-  cursor: pointer;
-}
+  li button:hover{
+    background-color: #b02b39;
+  }

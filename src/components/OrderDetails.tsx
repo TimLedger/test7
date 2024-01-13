@@ -11,24 +11,24 @@ interface OrderDetailsProps {
   removeItem: (item: OrderItem) => void;
   totalPrice: number;
 }
-
+  
 function OrderDetails({ order, removeItem, totalPrice }: OrderDetailsProps) {
   return (
     <div className="order-details">
-      <h2>Order Details</h2>
+      <h2>Ваш заказ</h2>
       {order.length === 0 ? (
-        <p>No items in the order</p>
+        <p>Вы пока что ничего не выбрали</p>
       ) : (
         <div>
           <ul>
             {order.map((item) => (
               <li key={item.name}>
-                {item.name} x{item.quantity} - ${item.price * item.quantity}
-                <button onClick={() => removeItem(item)}>Remove</button>
+                {item.name} x{item.quantity} - {item.price * item.quantity} ₽
+                <button onClick={() => removeItem(item)}>Убрать</button>
               </li>
             ))}
           </ul>
-          <p>Total price: ${totalPrice}</p>
+          <p>Итого: {totalPrice} ₽</p>
         </div>
       )}
     </div>
